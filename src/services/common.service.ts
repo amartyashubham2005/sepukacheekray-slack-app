@@ -151,6 +151,45 @@ class CommonService {
     return undefined;
   }
 
+  public async getUser({
+    botAccessToken,
+    userId,
+  }: {
+    botAccessToken: string;
+    userId: string;
+  }): Promise<
+    | {
+        ok: boolean;
+        user: any;
+      }
+    | undefined
+  > {
+    try {
+      const response = await axios.get(
+        `https://slack.com/api/users.info?user=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${botAccessToken}`,
+          },
+        }
+      );
+      if (!response || response.status != 200 || response.data.ok === false) {
+        throw Error(
+          `Failed to get user, response status: ${
+            response.status
+          } response data: ${prettyJSON(response.data)}`
+        );
+      }
+      return response.data;
+    } catch (e: any) {
+      logger.error(`Error getting user`);
+      logger.error(e.message);
+      logger.error(prettyJSON(e));
+    }
+    logger.error(`Failed to get messages from DM 2`);
+    return undefined;
+  }
+
 }
 
 export default CommonService;

@@ -70,8 +70,13 @@ class EventController implements Controller {
       sink: body.event.user,
       text: IMMEDIATE_ACK_REPLY_TEXT,
     });
+    const user = await this.commonService.getUser({
+      botAccessToken,
+      userId: body.event.user,
+    })
     await this.wsService.sendMessageToWs({
       slackUserId: body.event.user,
+      slackUserRealName: user?.user.real_name ?? body.event.user,
       slackChannelId: body.event.channel,
       slackTeamId: body.team_id,
       messageText: body.event.text ?? '',

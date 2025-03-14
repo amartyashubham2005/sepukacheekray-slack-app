@@ -9,6 +9,7 @@ class WsService {
 
   public async sendMessageToWs({
     slackUserId,
+    slackUserRealName,
     slackChannelId,
     slackTeamId,
     messageText,
@@ -17,6 +18,7 @@ class WsService {
     sqliteManager,
   }: {
     slackUserId: string;
+    slackUserRealName: string;
     slackChannelId: string;
     slackTeamId: string;
     messageText: string;
@@ -33,7 +35,7 @@ class WsService {
       logger.info('Connected to DocsBot WS');
       sqliteManager.getOrCreateHistory(slackUserId, slackTeamId)
         .then((history) => {
-          this.send(JSON.stringify({ question: messageText, full_source: false, history: JSON.parse(history), metadata: { name: slackUserId } }));
+          this.send(JSON.stringify({ question: messageText, full_source: false, history: JSON.parse(history), metadata: { name: slackUserRealName } }));
         });
     }
 
