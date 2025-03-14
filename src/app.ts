@@ -47,7 +47,7 @@ class App {
 
   private initializeControllers(controllers: readonly Controller[]) {
     this.app.use('/checks', (_, response) =>
-      response.send('Backend is up and running!! v2')
+      response.send('Backend is up and running!! v3')
     );
     controllers.forEach((controller) => {
       this.app.use('/', controller.router);
